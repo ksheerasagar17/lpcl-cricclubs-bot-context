@@ -1,0 +1,152 @@
+# Cricket-Insight Agent - Docker Compose Configuration
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: cricket-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: cricket_admin
+      MONGO_INITDB_ROOT_PASSWORD: cricket_password_123
+      MONGO_INITDB_DATABASE: cricket_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./data/mongodb-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - cricket-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB MCP Server
+  mcp-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.mcp
+    container_name: cricket-mcp-server
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://cricket_admin:cricket_password_123@mongodb:27017/cricket_db?authSource=admin
+      - MCP_SERVER_PORT=8000
+      - MCP_SERVER_HOST=0.0.0.0
+      - READ_ONLY=true
+      - MAX_TIME_MS=3000
+      - ALLOW_DISK_USE=false
+      - VERBOSE_LOGGING=true
+      - LOG_LEVEL=INFO
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./schema:/app/schema:ro
+      - mcp_logs:/app/logs
+    networks:
+      - cricket-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Cricket Insight Agent (Streamlit UI)
+  cricket-agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.agent
+    container_name: cricket-agent-ui
+    restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MCP_URI=http://mcp-server:8000/mcp
+      - LLM_MODEL=gpt-4o-mini
+      - LLM_TEMPERATURE=0.1
+      - VERBOSE_LOGGING=true
+      - ENABLE_VECTOR_STORE=false
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    ports:
+      - "8501:8501"
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    volumes:
+      - ./schema:/app/schema:ro
+      - vector_store_data:/app/vector_store/data
+      - agent_logs:/app/logs
+    networks:
+      - cricket-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Redis for caching (if needed)
+  redis:
+    image: redis:7-alpine
+    container_name: cricket-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cricket-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - cache
+
+  # Optional: Nginx reverse proxy (for production)
+  nginx:
+    image: nginx:alpine
+    container_name: cricket-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - cricket-agent
+      - mcp-server
+    networks:
+      - cricket-network
+    profiles:
+      - production
+
+# Volumes for persistent data
+volumes:
+  mongodb_data:
+    driver: local
+  mcp_logs:
+    driver: local
+  agent_logs:
+    driver: local
+  vector_store_data:
+    driver: local
+  redis_data:
+    driver: local
+
+# Networks
+networks:
+  cricket-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

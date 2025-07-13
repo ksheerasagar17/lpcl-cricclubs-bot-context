@@ -1,0 +1,440 @@
+# Cricket Matches Schema Glossary
+# This YAML file describes the structure and meaning of cricket match data
+# Based on schema_matches.json - Cricket match database schema
+
+collection_name: "matches"
+description: "Complete cricket match records with scores, teams, and match metadata"
+
+# Document Structure Overview
+document_structure:
+  description: "Each document represents a single cricket match with all associated data"
+  primary_key: "_id"
+  unique_identifiers: ["matchId", "_id"]
+
+# Field Definitions with Cricket Context
+fields:
+  # Database Metadata
+  _id:
+    type: "ObjectId"
+    description: "MongoDB unique document identifier"
+    example: "507f1f77bcf86cd799439011"
+    required: true
+    cricket_context: "Primary database key for match record"
+
+  # Administrative Fields
+  canDelete:
+    type: "integer"
+    description: "Permission flag indicating if match record can be deleted"
+    values: [0, 1]
+    example: 1
+    required: true
+    cricket_context: "Administrative control for data management"
+
+  canUpdate:
+    type: "integer" 
+    description: "Permission flag indicating if match record can be updated"
+    values: [0, 1]
+    example: 1
+    required: true
+    cricket_context: "Administrative control for live score updates"
+
+  # Club and Organization
+  clubId:
+    type: "integer"
+    description: "Unique identifier for the cricket club organizing the match"
+    example: 12345
+    required: true
+    cricket_context: "Links match to organizing cricket club or association"
+
+  clubName:
+    type: "string"
+    description: "Name of the cricket club organizing the match"
+    example: "Mumbai Cricket Association"
+    required: true
+    cricket_context: "Human-readable club name for display purposes"
+
+  # Match Status and Progress
+  isComplete:
+    type: "integer"
+    description: "Flag indicating if the match has finished"
+    values: [0, 1]
+    example: 1
+    required: true
+    cricket_context: "0 = In progress/Scheduled, 1 = Completed"
+
+  isDls:
+    type: "boolean"
+    description: "Indicates if Duckworth-Lewis-Stern method was applied"
+    example: false
+    required: true
+    cricket_context: "True when rain interruptions required DLS calculations"
+
+  isFollowon:
+    type: "integer"
+    description: "Flag indicating if follow-on was enforced (Test cricket)"
+    values: [0, 1]
+    example: 0
+    required: true
+    cricket_context: "1 if team was asked to follow-on after first innings"
+
+  status:
+    type: "string"
+    description: "Current status of the match"
+    examples: ["Live", "Completed", "Abandoned", "Scheduled"]
+    required: true
+    cricket_context: "Real-time match status for live scoring"
+
+  # Temporal Information
+  lastUpdatedDate:
+    type: "string"
+    description: "Timestamp of last update to match data"
+    format: "ISO 8601 date string"
+    example: "2024-01-15T14:30:00Z"
+    required: true
+    cricket_context: "Used for live score freshness and data synchronization"
+
+  matchDate:
+    type: "string"
+    description: "Date when the match was played or scheduled"
+    format: "Date string"
+    example: "2024-01-15"
+    required: true
+    cricket_context: "Match start date for scheduling and historical analysis"
+
+  timeSinceLastUpdate:
+    type: "string"
+    description: "Human-readable time since last score update"
+    example: "2 minutes ago"
+    required: true
+    cricket_context: "Display field for live score recency"
+
+  # Location and Venue
+  location:
+    type: "string or null"
+    description: "Venue or ground where the match is played"
+    example: "Wankhede Stadium, Mumbai"
+    required: true
+    nullable: true
+    cricket_context: "Cricket ground name and city for venue identification"
+
+  # Match Identification
+  matchId:
+    type: "integer"
+    description: "Unique identifier for the cricket match"
+    example: 98765
+    required: true
+    cricket_context: "Business key for match identification across systems"
+
+  # Match Format and Type
+  matchType:
+    type: "string"
+    description: "Format of cricket match"
+    examples: ["T20", "ODI", "Test", "T10"]
+    required: true
+    cricket_context: "Determines overs limit and playing conditions"
+
+  overs:
+    type: "integer"
+    description: "Maximum overs per innings for limited-overs matches"
+    examples: [20, 50, 10]
+    required: true
+    cricket_context: "Defines match duration (e.g., 20 for T20, 50 for ODI)"
+
+  # Series Information
+  seriesName:
+    type: "string"
+    description: "Name of the tournament or series"
+    example: "IPL 2024"
+    required: true
+    cricket_context: "Tournament context for grouping related matches"
+
+  seriesType:
+    type: "string"
+    description: "Type or category of the series"
+    examples: ["League", "Cup", "Championship"]
+    required: true
+    cricket_context: "Competition format classification"
+
+  # Team Information
+  teamOne:
+    type: "integer"
+    description: "Unique identifier for the first team"
+    example: 101
+    required: true
+    cricket_context: "Database ID for team 1 (usually home team)"
+
+  teamOneCode:
+    type: "string"
+    description: "Short code for the first team"
+    example: "MI"
+    required: true
+    cricket_context: "3-letter team abbreviation for displays"
+
+  teamOneName:
+    type: "string"
+    description: "Full name of the first team"
+    example: "Mumbai Indians"
+    required: true
+    cricket_context: "Complete team name for official records"
+
+  teamTwo:
+    type: "integer"
+    description: "Unique identifier for the second team"
+    example: 102
+    required: true
+    cricket_context: "Database ID for team 2 (usually away team)"
+
+  teamTwoCode:
+    type: "string"
+    description: "Short code for the second team"
+    example: "CSK"
+    required: true
+    cricket_context: "3-letter team abbreviation for displays"
+
+  teamTwoName:
+    type: "string"
+    description: "Full name of the second team"
+    example: "Chennai Super Kings"
+    required: true
+    cricket_context: "Complete team name for official records"
+
+  # Team Logos
+  t1_logo_file_path:
+    type: "string"
+    description: "File path to team one's logo image"
+    example: "/images/teams/mumbai_indians.png"
+    required: true
+    cricket_context: "Team logo for UI display purposes"
+
+  t2_logo_file_path:
+    type: "string"
+    description: "File path to team two's logo image"
+    example: "/images/teams/chennai_super_kings.png"
+    required: true
+    cricket_context: "Team logo for UI display purposes"
+
+  # Team 1 Overall Scores (Multi-innings aggregated)
+  t1balls:
+    type: "integer"
+    description: "Total balls faced by team one across all innings"
+    example: 120
+    required: true
+    cricket_context: "Aggregate balls faced for strike rate calculations"
+
+  t1total:
+    type: "integer"
+    description: "Total runs scored by team one across all innings"
+    example: 185
+    required: true
+    cricket_context: "Final team score for match result determination"
+
+  t1wickets:
+    type: "integer"
+    description: "Total wickets lost by team one across all innings"
+    example: 7
+    required: true
+    cricket_context: "Total wickets lost (max 10 per innings)"
+
+  # Team 1 First Innings
+  t1_1balls:
+    type: "integer"
+    description: "Balls faced by team one in first innings"
+    example: 120
+    required: true
+    cricket_context: "First innings balls for over-by-over analysis"
+
+  t1_1total:
+    type: "integer"
+    description: "Runs scored by team one in first innings"
+    example: 185
+    required: true
+    cricket_context: "First innings score for innings break analysis"
+
+  t1_1wickets:
+    type: "integer"
+    description: "Wickets lost by team one in first innings"
+    example: 7
+    required: true
+    cricket_context: "First innings wickets for bowling performance"
+
+  # Team 1 Second Innings (Test/Multi-day cricket)
+  t1_2balls:
+    type: "integer"
+    description: "Balls faced by team one in second innings"
+    example: 180
+    required: true
+    cricket_context: "Second innings balls (applicable in Test cricket)"
+
+  t1_2total:
+    type: "integer"
+    description: "Runs scored by team one in second innings"
+    example: 220
+    required: true
+    cricket_context: "Second innings score for follow-on scenarios"
+
+  t1_2wickets:
+    type: "integer"
+    description: "Wickets lost by team one in second innings"
+    example: 5
+    required: true
+    cricket_context: "Second innings wickets for match result calculation"
+
+  # Team 2 Overall Scores
+  t2balls:
+    type: "integer"
+    description: "Total balls faced by team two across all innings"
+    example: 118
+    required: true
+    cricket_context: "Aggregate balls for team comparison and strike rates"
+
+  t2total:
+    type: "integer"
+    description: "Total runs scored by team two across all innings"
+    example: 175
+    required: true
+    cricket_context: "Final team score for victory margin calculations"
+
+  t2wickets:
+    type: "integer"
+    description: "Total wickets lost by team two across all innings"
+    example: 9
+    required: true
+    cricket_context: "Total wickets lost for bowling analysis"
+
+  # Team 2 First Innings
+  t2_1balls:
+    type: "integer"
+    description: "Balls faced by team two in first innings"
+    example: 118
+    required: true
+    cricket_context: "First innings balls for chase analysis"
+
+  t2_1total:
+    type: "integer"
+    description: "Runs scored by team two in first innings"
+    example: 175
+    required: true
+    cricket_context: "First innings score for target setting/chasing"
+
+  t2_1wickets:
+    type: "integer"
+    description: "Wickets lost by team two in first innings"
+    example: 9
+    required: true
+    cricket_context: "First innings wickets for pressure analysis"
+
+  # Team 2 Second Innings
+  t2_2balls:
+    type: "integer"
+    description: "Balls faced by team two in second innings"
+    example: 0
+    required: true
+    cricket_context: "Second innings balls (usually 0 in limited overs)"
+
+  t2_2total:
+    type: "integer"
+    description: "Runs scored by team two in second innings"
+    example: 0
+    required: true
+    cricket_context: "Second innings score for Test match scenarios"
+
+  t2_2wickets:
+    type: "integer"
+    description: "Wickets lost by team two in second innings"
+    example: 0
+    required: true
+    cricket_context: "Second innings wickets for Test cricket analysis"
+
+  # DLS and Weather Adjustments
+  t2RevisedOvers:
+    type: "number (Double)"
+    description: "Revised overs for team two due to rain/DLS"
+    example: 18.4
+    required: true
+    cricket_context: "Adjusted overs when weather interrupts play"
+
+  # Match Result
+  result:
+    type: "string"
+    description: "Final result of the match with victory margin"
+    examples: ["Mumbai Indians won by 7 wickets", "Match tied", "No result"]
+    required: true
+    cricket_context: "Official match result with victory details"
+
+  winner:
+    type: "integer"
+    description: "Team ID of the winning team (0 for tie/no result)"
+    examples: [101, 102, 0]
+    required: true
+    cricket_context: "Winner identification (0 = tie/abandoned, team ID = winner)"
+
+  # Media and Broadcasting
+  live_streaming_link:
+    type: "string"
+    description: "URL for live streaming of the match"
+    example: "https://stream.cricket.com/match/12345"
+    required: true
+    cricket_context: "Live broadcast link for viewer access"
+
+# Common Query Patterns
+common_queries:
+  by_team: "Find matches where teamOneName = 'Mumbai Indians'"
+  by_format: "Find matches where matchType = 'T20'"
+  by_series: "Find matches where seriesName = 'IPL 2024'"
+  by_date_range: "Find matches where matchDate between '2024-01-01' and '2024-12-31'"
+  live_matches: "Find matches where status = 'Live'"
+  completed_matches: "Find matches where isComplete = 1"
+  high_scoring: "Find matches where t1total > 200 OR t2total > 200"
+  close_matches: "Find matches with victory margin < 10 runs or < 2 wickets"
+
+# Aggregation Pipeline Examples
+aggregation_examples:
+  team_performance:
+    description: "Calculate win/loss record for a team"
+    pipeline: |
+      [
+        {"$match": {"$or": [{"teamOneName": "Mumbai Indians"}, {"teamTwoName": "Mumbai Indians"}]}},
+        {"$group": {
+          "_id": "$winner",
+          "matches": {"$sum": 1}
+        }}
+      ]
+  
+  format_statistics:
+    description: "Get average scores by match format"
+    pipeline: |
+      [
+        {"$group": {
+          "_id": "$matchType",
+          "avgT1Score": {"$avg": "$t1total"},
+          "avgT2Score": {"$avg": "$t2total"},
+          "totalMatches": {"$sum": 1}
+        }}
+      ]
+
+# Data Quality Rules
+data_quality:
+  score_validation: "t1total and t2total should be >= 0 and <= 500"
+  wickets_validation: "wickets should be >= 0 and <= 10 per innings"
+  overs_consistency: "balls should not exceed (overs * 6) per innings"
+  team_ids: "teamOne and teamTwo should be different"
+  winner_validation: "winner should be 0, teamOne, or teamTwo"
+  date_format: "matchDate should be valid date string"
+
+# Performance Indexes (Recommended)
+recommended_indexes:
+  - field: "matchId"
+    type: "unique"
+    purpose: "Fast match lookup"
+  - field: "matchDate"
+    type: "ascending"
+    purpose: "Date range queries"
+  - fields: ["teamOneName", "teamTwoName"]
+    type: "compound"
+    purpose: "Team-based queries"
+  - field: "seriesName"
+    type: "ascending" 
+    purpose: "Tournament/series analysis"
+  - field: "status"
+    type: "ascending"
+    purpose: "Live match filtering"

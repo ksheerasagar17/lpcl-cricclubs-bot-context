@@ -1,0 +1,692 @@
+# Cricket Ball-by-Ball Schema Glossary
+# This YAML file describes the structure and meaning of ball-by-ball cricket data
+# Based on validation of schema-ball_by_ball.json against actual data
+
+collection_name: "ball_by_ball"
+description: "Detailed ball-by-ball cricket match data with player statistics and over-by-over progression"
+
+# Schema Validation Status
+validation_status:
+  status: "CORRECTED"
+  issues_found: 4
+  issues_fixed: 4
+  date_validated: "2025-01-13"
+
+# Document Structure Overview
+document_structure:
+  description: "Each document represents a single cricket match with complete ball-by-ball data"
+  primary_key: "_id"
+  data_granularity: "Individual ball level with aggregated statistics"
+
+# Field Definitions with Cricket Context
+fields:
+  # Database Metadata
+  _id:
+    type: "ObjectId"
+    structure: {"$oid": "string"}
+    description: "MongoDB unique document identifier"
+    example: "68116476c9a8dc1ad3be75cb"
+    required: true
+    cricket_context: "Primary database key for ball-by-ball match record"
+
+  # Current Batting State
+  latestBatting:
+    type: "object"
+    description: "Current batting partnership with live statistics"
+    cricket_context: "Real-time batting state for live scoring"
+    
+    batsman1:
+      type: "object"
+      description: "Primary batsman (striker) current statistics"
+      cricket_context: "Batsman currently facing the ball"
+      fields:
+        playerID:
+          type: "number"
+          description: "Unique identifier for the batsman"
+          example: 286412
+          cricket_context: "Database ID for player lookup"
+        
+        runsScored:
+          type: "number"
+          description: "Runs scored by this batsman in current innings"
+          example: 98
+          cricket_context: "Individual batting score"
+        
+        ballsFaced:
+          type: "number"
+          description: "Balls faced by this batsman in current innings"
+          example: 52
+          cricket_context: "Used for strike rate calculation"
+        
+        fours:
+          type: "number"
+          description: "Number of boundaries (4 runs) hit"
+          example: 7
+          cricket_context: "Boundary count for power hitting analysis"
+        
+        sixers:
+          type: "number"
+          description: "Number of sixes (6 runs) hit"
+          example: 9
+          cricket_context: "Six count for power hitting analysis"
+        
+        firstName:
+          type: "string"
+          description: "Player's first name"
+          example: "Prabhakaran"
+          cricket_context: "Player identification"
+        
+        lastName:
+          type: "string"
+          description: "Player's last name"
+          example: "Thatchinamoorthy"
+          cricket_context: "Player identification"
+        
+        outStringNoLink:
+          type: "mixed"
+          description: "Dismissal description without hyperlinks"
+          example: null
+          nullable: true
+          cricket_context: "How the batsman got out (if dismissed)"
+        
+        outStringNickNamesNoLink:
+          type: "mixed"
+          description: "Dismissal description using player nicknames"
+          example: null
+          nullable: true
+          cricket_context: "User-friendly dismissal description"
+        
+        profilepic_file_path:
+          type: "string"
+          description: "Path to player's profile picture"
+          example: "/documentsRep/profilePics/286412.JPG"
+          cricket_context: "UI display purposes"
+        
+        matches:
+          type: "number"
+          description: "Total matches played by this player"
+          example: 0
+          cricket_context: "Player experience indicator"
+        
+        howOut:
+          type: "string"
+          description: "Method of dismissal"
+          example: ""
+          cricket_context: "Caught, Bowled, LBW, Run Out, etc."
+        
+        isOut:
+          type: "string"
+          description: "Flag indicating if batsman is dismissed"
+          values: ["0", "1"]
+          example: "0"
+          corrected_from: "Date"
+          cricket_context: "0 = Not Out, 1 = Dismissed"
+        
+        nickName:
+          type: "string"
+          description: "Player's commonly used nickname"
+          example: "Prabhakar"
+          cricket_context: "Display name for UI"
+        
+        wicketTaker1:
+          type: "string"
+          description: "Primary player involved in dismissal (bowler/fielder)"
+          example: ""
+          cricket_context: "Credit for wicket taking"
+        
+        wicketTaker2:
+          type: "string"
+          description: "Secondary player involved in dismissal (catcher/keeper)"
+          example: ""
+          cricket_context: "Assist credit for dismissal"
+        
+        battingStyle:
+          type: "string"
+          description: "Batting technique style"
+          example: "Right Handed Batter"
+          values: ["Right Handed Batter", "Left Handed Batter"]
+          cricket_context: "Technical batting approach"
+        
+        impactPlayerIn:
+          type: "boolean"
+          description: "Whether player is a substitute (impact player)"
+          example: false
+          cricket_context: "T20 league impact player rule"
+        
+        impactPlayerOut:
+          type: "boolean"
+          description: "Whether player was substituted out"
+          example: false
+          cricket_context: "T20 league impact player rule"
+
+    batsman2:
+      type: "object"
+      description: "Non-striker batsman current statistics"
+      cricket_context: "Batsman at the other end of pitch"
+      # Same fields as batsman1
+
+  # Current Bowling State  
+  latestBowling:
+    type: "object"
+    description: "Current bowling figures for active bowlers"
+    cricket_context: "Real-time bowling statistics"
+    
+    bowler1:
+      type: "object"
+      description: "Primary bowler current statistics"
+      cricket_context: "Bowler currently bowling the over"
+      fields:
+        matchID:
+          type: "number"
+          description: "Match identifier"
+          example: 2301
+          cricket_context: "Links bowling stats to specific match"
+        
+        playerID:
+          type: "number"
+          description: "Unique identifier for the bowler"
+          example: 5009003
+          cricket_context: "Database ID for player lookup"
+        
+        teamId:
+          type: "number"
+          description: "Team identifier for the bowler"
+          example: 718
+          cricket_context: "Bowling team identification"
+        
+        balls:
+          type: "number"
+          description: "Total balls bowled by this bowler"
+          example: 2
+          cricket_context: "Bowling workload tracking"
+        
+        runs:
+          type: "number"
+          description: "Total runs conceded by this bowler"
+          example: 8
+          cricket_context: "Bowling economy calculation"
+        
+        wides:
+          type: "number"
+          description: "Number of wide balls bowled"
+          example: 1
+          cricket_context: "Bowling accuracy tracking"
+        
+        noBalls:
+          type: "number"
+          description: "Number of no-balls bowled"
+          example: 0
+          cricket_context: "Bowling accuracy tracking"
+        
+        hattricks:
+          type: "number"
+          description: "Number of hat-tricks taken"
+          example: 0
+          cricket_context: "Special bowling achievement"
+        
+        dotBalls:
+          type: "number"
+          description: "Number of dot balls (0 runs) bowled"
+          example: 0
+          cricket_context: "Bowling pressure indicator"
+        
+        wickets:
+          type: "number"
+          description: "Number of wickets taken"
+          example: 0
+          cricket_context: "Bowling effectiveness"
+        
+        maidens:
+          type: "number"
+          description: "Number of maiden overs bowled"
+          example: 0
+          cricket_context: "Bowling pressure and economy"
+        
+        firstName:
+          type: "string"
+          description: "Bowler's first name"
+          example: "Vineeth"
+          cricket_context: "Player identification"
+        
+        lastName:
+          type: "string"
+          description: "Bowler's last name"
+          example: "Avvaru"
+          cricket_context: "Player identification"
+        
+        innings:
+          type: "number"
+          description: "Innings number (1 or 2)"
+          example: 1
+          cricket_context: "Which innings the bowler is bowling in"
+        
+        profilepic_file_path:
+          type: "string"
+          description: "Path to bowler's profile picture"
+          example: "/documentsRep/profilePics/35256381-7ac0-42da-a3a3-ff2736e9820d.jpeg"
+          cricket_context: "UI display purposes"
+        
+        overs:
+          type: "string"
+          description: "Overs bowled in cricket notation"
+          example: "0.2"
+          format: "overs.balls (e.g., 3.4 = 3 overs 4 balls)"
+          corrected_from: "Date (inconsistent)"
+          cricket_context: "Bowling workload in cricket notation"
+        
+        matches:
+          type: "number"
+          description: "Total matches played by this bowler"
+          example: 0
+          cricket_context: "Player experience indicator"
+        
+        bowlingStyle:
+          type: "string"
+          description: "Bowling technique style"
+          example: "Left Arm Medium"
+          values: ["Right Arm Fast", "Left Arm Medium", "Right Arm Spin", etc.]
+          cricket_context: "Bowling technique classification"
+        
+        impactPlayerIn:
+          type: "boolean"
+          description: "Whether bowler is a substitute (impact player)"
+          example: false
+          cricket_context: "T20 league impact player rule"
+        
+        impactPlayerOut:
+          type: "boolean"
+          description: "Whether bowler was substituted out"
+          example: false
+          cricket_context: "T20 league impact player rule"
+        
+        isSecondary:
+          type: "boolean"
+          description: "Whether this is a secondary/part-time bowler"
+          example: false
+          cricket_context: "Bowling role classification"
+
+    bowler2:
+      type: "object"  
+      description: "Secondary/previous bowler statistics"
+      cricket_context: "Recently bowled or next to bowl"
+      # Same fields as bowler1
+
+  # First Innings Ball-by-Ball Data
+  innings1Balls:
+    type: "object"
+    description: "Complete first innings ball-by-ball data"
+    cricket_context: "Detailed over-by-over progression"
+    fields:
+      runs:
+        type: "number"
+        description: "Total runs scored in first innings"
+        example: 155
+        cricket_context: "Final innings score"
+      
+      overs:
+        type: "string"
+        description: "Total overs bowled in first innings"
+        example: "20.0"
+        format: "overs.balls"
+        cricket_context: "Innings duration"
+      
+      teamName:
+        type: "string"
+        description: "Name of the batting team"
+        example: "Ace Aviators"
+        cricket_context: "Team identification"
+      
+      teamLogoPath:
+        type: "string"
+        description: "Path to team logo image"
+        example: "/documentsRep/teamLogos/d00e1144-a0b6-4546-9b79-d2abcfeb0ec5.jpg"
+        cricket_context: "UI display purposes"
+      
+      rcb:
+        type: "string"
+        description: "Runs/Wickets display format"
+        example: "155/8"
+        format: "runs/wickets"
+        corrected_from: "Date (inconsistent)"
+        cricket_context: "Standard cricket score display"
+      
+      oversMap:
+        type: "object"
+        description: "Over-by-over detailed breakdown"
+        dynamic_keys: true
+        key_pattern: "Over{number}"
+        cricket_context: "Ball-by-ball progression through innings"
+        
+        Over0:
+          type: "object"
+          description: "First over (0-indexed) details"
+          cricket_context: "Individual over statistics and ball details"
+          fields:
+            runs:
+              type: "number"
+              description: "Runs scored in this over"
+              example: 7
+              cricket_context: "Over productivity"
+            
+            rcb:
+              type: "string"
+              description: "Score at end of over"
+              example: "7/0"
+              format: "runs/wickets"
+              cricket_context: "Progressive score tracking"
+            
+            runRate:
+              type: "string"
+              description: "Current run rate at end of over"
+              example: "7.00"
+              format: "decimal string"
+              corrected_from: "Date (inconsistent)"
+              cricket_context: "Scoring pace indicator"
+            
+            batsmanName:
+              type: "string"
+              description: "Striker batsman name"
+              example: "Venkatesh J"
+              cricket_context: "Who is facing the ball"
+            
+            runnerName:
+              type: "string"
+              description: "Non-striker batsman name"
+              example: "N Kumar M"
+              cricket_context: "Batsman at other end"
+            
+            batsmanRuns:
+              type: "number"
+              description: "Striker's runs at end of over"
+              example: 6
+              cricket_context: "Individual batting progress"
+            
+            runnerRuns:
+              type: "number"
+              description: "Non-striker's runs at end of over"
+              example: 1
+              cricket_context: "Individual batting progress"
+            
+            batsmanBalls:
+              type: "number"
+              description: "Balls faced by striker"
+              example: 5
+              cricket_context: "Strike rate calculation"
+            
+            runnerBalls:
+              type: "number"
+              description: "Balls faced by non-striker"
+              example: 1
+              cricket_context: "Strike rate calculation"
+            
+            bowlerName:
+              type: "string"
+              description: "Bowler's name for this over"
+              example: "Nishant P"
+              cricket_context: "Who bowled this over"
+            
+            bowlerBalls:
+              type: "number"
+              description: "Total balls bowled by this bowler"
+              example: 6
+              cricket_context: "Bowling workload"
+            
+            bowlerMaidens:
+              type: "number"
+              description: "Maiden overs by this bowler"
+              example: 0
+              cricket_context: "Bowling pressure metric"
+            
+            bowlerRuns:
+              type: "number"
+              description: "Total runs conceded by this bowler"
+              example: 7
+              cricket_context: "Bowling economy"
+            
+            bowlerWickets:
+              type: "number"
+              description: "Wickets taken by this bowler"
+              example: 0
+              cricket_context: "Bowling effectiveness"
+            
+            balls:
+              type: "array"
+              items_type: "mixed"
+              description: "Array of individual ball details"
+              cricket_context: "Ball-by-ball breakdown of the over"
+              ball_structure:
+                over:
+                  type: "number"
+                  description: "Over number (0-indexed)"
+                  example: 0
+                
+                ball:
+                  type: "number"
+                  description: "Ball number in over (1-6)"
+                  example: 6
+                
+                ballType:
+                  type: "string"
+                  description: "Type of delivery"
+                  example: "Good Ball"
+                  values: ["Good Ball", "Wide", "No Ball", "Bye", "Leg Bye"]
+                
+                commentary:
+                  type: "string"
+                  description: "Ball-by-ball commentary"
+                  example: "Nishant P to Venkatesh J, 1 run"
+                
+                runs:
+                  type: "number"
+                  description: "Runs scored off this ball"
+                  example: 1
+                
+                runsDisplay:
+                  type: "string"
+                  description: "Display format for runs"
+                  example: "1"
+                  values: ["0-6", ".", "wd", "nb", "b", "lb"]
+                
+                direction:
+                  type: "string"
+                  description: "Direction ball was hit"
+                  example: ""
+                  cricket_context: "Shot direction analysis"
+                
+                pitchMap:
+                  type: "string"
+                  description: "Where ball pitched on pitch"
+                  example: ""
+                  cricket_context: "Bowling line and length analysis"
+                
+                strikerName:
+                  type: "string"
+                  description: "Batsman facing this ball"
+                  example: "Venkatesh J"
+                
+                nonStrikerName:
+                  type: "string"
+                  description: "Batsman at other end"
+                  example: "N Kumar M"
+                
+                bowlerName:
+                  type: "string"
+                  description: "Bowler delivering this ball"
+                  example: "Nishant P"
+                
+                bowler:
+                  type: "number"
+                  description: "Bowler player ID"
+                  example: 43329
+                
+                striker:
+                  type: "number"
+                  description: "Striker player ID"
+                  example: 1951884
+                
+                nonStriker:
+                  type: "number"
+                  description: "Non-striker player ID"
+                  example: 765282
+                
+                isSuperOver:
+                  type: "number"
+                  description: "Whether this is a super over ball"
+                  example: 0
+                  values: [0, 1]
+                
+                createdAt:
+                  type: "string"
+                  format: "ISO 8601 datetime"
+                  description: "Timestamp when ball was recorded"
+                  example: "2025-04-27T21:18:49.000+00:00"
+                
+                lastModifiedAt:
+                  type: "mixed"
+                  description: "Last modification timestamp"
+                  example: null
+                  nullable: true
+            
+            overNum:
+              type: "number"
+              description: "Over number (0-indexed)"
+              example: 0
+              cricket_context: "Sequential over identification"
+
+  # Second Innings Ball-by-Ball Data
+  innings2Balls:
+    type: "object"
+    description: "Complete second innings ball-by-ball data"
+    cricket_context: "Chase/response innings detailed data"
+    # Same structure as innings1Balls
+
+  # Super Over Data (for tied matches)
+  superOverInnings1Balls:
+    type: "mixed"
+    description: "First super over ball-by-ball data"
+    cricket_context: "Tie-breaker over details"
+    nullable: true
+
+  superOverInnings2Balls:
+    type: "mixed"
+    description: "Second super over ball-by-ball data"
+    cricket_context: "Tie-breaker response over details"
+    nullable: true
+
+  # Additional Innings (for Test/Multi-day cricket)
+  innings3Balls:
+    type: "mixed"
+    description: "Third innings ball-by-ball data"
+    cricket_context: "Test cricket third innings"
+    nullable: true
+
+  innings4Balls:
+    type: "mixed"
+    description: "Fourth innings ball-by-ball data"
+    cricket_context: "Test cricket fourth innings chase"
+    nullable: true
+
+# Schema Corrections Made
+schema_corrections:
+  field_type_fixes:
+    - field: "latestBatting.batsman1.isOut"
+      from: "Date"
+      to: "String"
+      reason: "Actual data contains '0'/'1' string flags"
+    
+    - field: "latestBatting.batsman2.isOut"
+      from: "Date"
+      to: "String"
+      reason: "Actual data contains '0'/'1' string flags"
+    
+    - field: "latestBowling.bowler1.overs"
+      from: "Date"
+      to: "String"
+      reason: "Actual data contains '0.2' cricket notation"
+    
+    - field: "latestBowling.bowler2.overs"
+      from: "String"
+      to: "String"
+      reason: "Confirmed correct, contains '3.0' notation"
+    
+    - field: "innings1Balls.rcb"
+      from: "Date"
+      to: "String"
+      reason: "Actual data contains '155/8' score format"
+    
+    - field: "innings1Balls.oversMap.Over*.rcb"
+      from: "Mixed (Date/String)"
+      to: "String"
+      reason: "Actual data contains '7/0' score format"
+    
+    - field: "innings1Balls.oversMap.Over*.runRate"
+      from: "Mixed (Date/String)"
+      to: "String"
+      reason: "Actual data contains '7.00' decimal format"
+
+# Common Query Patterns
+common_queries:
+  by_player: "Find all balls faced by specific batsman using playerID"
+  by_over: "Get specific over details using oversMap.Over{N}"
+  by_bowler: "Find all balls bowled by specific bowler"
+  boundaries: "Find all balls where runs >= 4"
+  wickets: "Find all balls where wicket was taken"
+  partnerships: "Track runs between batting partnerships"
+  economy_rate: "Calculate bowler economy using runs/balls"
+  strike_rate: "Calculate batsman strike rate using runs/balls"
+
+# Aggregation Pipeline Examples
+aggregation_examples:
+  player_performance:
+    description: "Get batting statistics for a specific player"
+    pipeline: |
+      [
+        {"$match": {"latestBatting.batsman1.playerID": 286412}},
+        {"$project": {
+          "runs": "$latestBatting.batsman1.runsScored",
+          "balls": "$latestBatting.batsman1.ballsFaced",
+          "strike_rate": {"$multiply": [{"$divide": ["$latestBatting.batsman1.runsScored", "$latestBatting.batsman1.ballsFaced"]}, 100]}
+        }}
+      ]
+  
+  over_analysis:
+    description: "Analyze scoring patterns by over"
+    pipeline: |
+      [
+        {"$project": {
+          "overs": {"$objectToArray": "$innings1Balls.oversMap"}
+        }},
+        {"$unwind": "$overs"},
+        {"$group": {
+          "_id": "$overs.k",
+          "avg_runs": {"$avg": "$overs.v.runs"},
+          "total_runs": {"$sum": "$overs.v.runs"}
+        }}
+      ]
+
+# Data Quality Rules
+data_quality:
+  batting_validation: "runsScored should be >= 0 and <= (ballsFaced * 6)"
+  bowling_validation: "runs should be >= balls (minimum 1 run per ball possible)"
+  over_validation: "Over numbers should be sequential 0-19 for T20"
+  ball_validation: "Ball numbers should be 1-6 per over"
+  score_consistency: "rcb format should be 'runs/wickets'"
+  timestamp_validation: "createdAt should be valid ISO 8601 format"
+
+# Performance Indexes (Recommended)
+recommended_indexes:
+  - field: "latestBatting.batsman1.playerID"
+    type: "ascending"
+    purpose: "Player performance queries"
+  - field: "latestBowling.bowler1.playerID"
+    type: "ascending"
+    purpose: "Bowler analysis queries"
+  - field: "innings1Balls.oversMap.Over0.balls.striker"
+    type: "ascending"
+    purpose: "Ball-by-ball player tracking"
+  - field: "_id"
+    type: "ascending"
+    purpose: "Document lookup"
+  - field: "innings1Balls.oversMap.Over0.balls.createdAt"
+    type: "descending"
+    purpose: "Chronological ball ordering"

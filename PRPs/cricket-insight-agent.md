@@ -72,11 +72,11 @@ A complete system comprising:
   why: Project conventions, testing requirements, code structure rules
   critical: Never create files longer than 500 lines, use venv_linux, type hints required
 
-- docfile: schema-ball_by_ball.json
-  why: Example cricket data structure for YAML schema creation
+- docfile: schema/ball_by_ball.yaml
+  why: Example cricket ball by ball schema glossary.
   
-- docfile: schema_matches.json  
-  why: Cricket matches data structure for schema glossary
+- docfile: schema/matches.yaml
+  why: Cricket matches schema glossary
 ```
 
 ### Current Codebase tree
@@ -87,6 +87,9 @@ lpcl-cricclubs-bot-context/
 │   │   ├── generate-prp.md
 │   │   └── execute-prp.md
 │   └── settings.local.json
+├── schema/
+│   ├── ball_by_ball.yaml
+│   └── matches.yaml
 ├── PRPs/
 │   ├── templates/prp_base.md
 │   └── EXAMPLE_multi_agent_prp.md
@@ -97,8 +100,6 @@ lpcl-cricclubs-bot-context/
 │   │   ├── database/            # Database security patterns
 │   │   └── tools/               # Tool registration system
 │   └── examples/database-tools.ts # Database tool patterns
-├── schema-ball_by_ball.json      # Cricket ball-by-ball data structure
-├── schema_matches.json           # Cricket matches data structure
 ├── CLAUDE.md                     # Project rules and conventions
 └── README.md
 ```

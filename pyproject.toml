@@ -1,0 +1,322 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cricket-insight-agent"
+version = "1.0.0"
+description = "AI-powered cricket data analysis with LangChain and MongoDB MCP integration"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Cricket Analytics Team", email = "team@cricket-insights.ai"}
+]
+maintainers = [
+    {name = "Cricket Analytics Team", email = "team@cricket-insights.ai"}
+]
+keywords = [
+    "cricket", "analytics", "ai", "langchain", "mongodb", "mcp", "sports", "data-analysis"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent"
+]
+requires-python = ">=3.10"
+dependencies = [
+    # Core LangChain & AI Dependencies
+    "langchain==0.3.9",
+    "langchain-openai==0.2.9", 
+    "langchain-core==0.3.21",
+    "langchain-community==0.3.8",
+    "openai==1.57.0",
+    
+    # MongoDB & Database Dependencies
+    "pymongo==4.10.1",
+    "motor==3.6.0",
+    
+    # Web Framework & UI Dependencies
+    "streamlit==1.40.2",
+    "fastapi==0.115.6",
+    "uvicorn==0.32.1",
+    "streamlit-chat==0.1.1",
+    
+    # Data Processing & Analytics
+    "pandas==2.2.3",
+    "numpy==2.2.1",
+    "pydantic==2.10.4",
+    "pydantic-settings==2.6.1",
+    
+    # Environment & Configuration
+    "python-dotenv==1.0.1",
+    "pyyaml==6.0.2",
+    
+    # Optional Vector Store Dependencies
+    "chromadb==0.5.23",
+    "sentence-transformers==3.3.1",
+    
+    # HTTP & Networking
+    "httpx==0.28.1",
+    "aiohttp==3.11.11",
+    "requests==2.32.3",
+    
+    # Async & Concurrency
+    "aiofiles==24.1.0",
+    
+    # Date & Time Handling
+    "python-dateutil==2.9.0.post0",
+    
+    # JSON & Data Serialization
+    "orjson==3.10.12",
+    
+    # Logging & Monitoring
+    "structlog==24.4.0",
+    "rich==13.9.4",
+    
+    # Security & Authentication
+    "cryptography==44.0.0",
+    
+    # Data Validation & Schema
+    "jsonschema==4.23.0",
+    
+    # CLI & Utilities
+    "click==8.1.8",
+    "typer==0.15.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    # Development & Testing Dependencies
+    "pytest==8.3.4",
+    "pytest-asyncio==0.24.0",
+    "pytest-cov==6.0.0",
+    "pytest-mock==3.14.0",
+    "pytest-xdist==3.6.0",
+    "pytest-timeout==2.3.1",
+    
+    # Code Quality & Linting
+    "ruff==0.8.4",
+    "mypy==1.13.0", 
+    "black==24.10.0",
+    "isort==5.13.2",
+    "pre-commit==4.0.1",
+    
+    # Type Annotations
+    "types-PyYAML==6.0.12.20241201",
+    "types-requests==2.32.0.20241231",
+    
+    # Documentation
+    "sphinx==8.1.3",
+    "sphinx-rtd-theme==3.0.2",
+    "myst-parser==4.0.0"
+]
+
+production = [
+    # Production Dependencies
+    "gunicorn==23.0.0",
+    "prometheus-client==0.21.1",
+    "sentry-sdk==2.19.2"
+]
+
+docker = [
+    # Docker-specific dependencies
+    "docker==7.1.0"
+]
+
+all = [
+    "cricket-insight-agent[dev,production,docker]"
+]
+
+[project.urls]
+Homepage = "https://github.com/cricket-analytics/cricket-insight-agent"
+Documentation = "https://cricket-insight-agent.readthedocs.io/"
+Repository = "https://github.com/cricket-analytics/cricket-insight-agent.git"
+"Bug Tracker" = "https://github.com/cricket-analytics/cricket-insight-agent/issues"
+Changelog = "https://github.com/cricket-analytics/cricket-insight-agent/blob/main/CHANGELOG.md"
+
+[project.scripts]
+cricket-agent = "cricket_agent.cli:main"
+cricket-mcp-server = "mcp_server.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cricket_agent*", "mcp_server*", "analytics*"]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.json", "*.md", "*.txt"]
+
+# Ruff configuration (Python linting and formatting)
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings  
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "ARG",  # flake8-unused-arguments
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+]
+ignore = [
+    "E501",   # line too long, handled by formatter
+    "B008",   # do not perform function calls in argument defaults
+    "ARG001", # unused function argument
+    "ARG002", # unused method argument
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["ARG", "S101", "SIM"]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["cricket_agent", "mcp_server", "analytics"]
+force-sort-within-sections = true
+split-on-trailing-comma = true
+
+# MyPy configuration (Type checking)
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "streamlit.*",
+    "langchain.*",
+    "chromadb.*",
+    "motor.*"
+]
+ignore_missing_imports = true
+
+# Black configuration (Code formatting)
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration (Import sorting)
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+known_first_party = ["cricket_agent", "mcp_server", "analytics"]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["cricket_agent", "mcp_server", "analytics"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/env/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod"
+]
+show_missing = true
+skip_covered = false
+precision = 2
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config", 
+    "--verbose",
+    "--tb=short",
+    "--cov=cricket_agent",
+    "--cov=mcp_server",
+    "--cov=analytics",
+    "--cov-report=term-missing",
+    "--cov-fail-under=85"
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "security: Security-focused tests", 
+    "performance: Performance tests",
+    "slow: Slow running tests",
+    "requires_db: Tests that require database connection",
+    "requires_openai: Tests that require OpenAI API"
+]
+filterwarnings = [
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning"
+]
+asyncio_mode = "auto"
+
+# Bandit configuration (Security linting)
+[tool.bandit]
+exclude_dirs = ["tests", "venv", "env"]
+skips = ["B101", "B601"]

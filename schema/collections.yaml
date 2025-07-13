@@ -1,0 +1,229 @@
+# Cricket Database Collections Overview
+# This YAML file describes all collections in the cricket database
+
+database_name: "cricket_db"
+description: "Complete cricket database with comprehensive match and player data"
+
+# Database Schema Overview
+database_structure:
+  description: "Cricket database with normalized and denormalized collections for different query patterns"
+  created_date: "2025-01-13"
+  last_updated: "2025-01-13"
+  version: "1.0"
+
+# Collection Definitions
+collections:
+  # Core Match Data
+  matches:
+    description: "Master match records with scores, teams, and metadata"
+    document_count_estimate: "10,000+"
+    primary_key: "_id"
+    business_key: "matchId"
+    relationships:
+      - collection: "ball_by_ball"
+        type: "one_to_one"
+        field: "matchId"
+        description: "Each match has detailed ball-by-ball data"
+      - collection: "players"
+        type: "many_to_many"
+        field: "teamOne, teamTwo"
+        description: "Players participate in matches through teams"
+    indexes:
+      - fields: ["matchId"]
+        type: "unique"
+      - fields: ["matchDate"]
+        type: "ascending"
+      - fields: ["teamOneName", "teamTwoName"]
+        type: "compound"
+      - fields: ["seriesName"]
+        type: "ascending"
+    file_reference: "matches.yaml"
+
+  ball_by_ball:
+    description: "Detailed ball-by-ball cricket match data with player statistics"
+    document_count_estimate: "50,000+"
+    primary_key: "_id"
+    business_key: "matchId + over + ball"
+    relationships:
+      - collection: "matches"
+        type: "one_to_one"
+        field: "matchId"
+        description: "Ball-by-ball data belongs to a specific match"
+      - collection: "players"
+        type: "many_to_many"
+        field: "latestBatting.batsman1.playerID, latestBowling.bowler1.playerID"
+        description: "Players appear in ball-by-ball data as batsmen and bowlers"
+    indexes:
+      - fields: ["latestBatting.batsman1.playerID"]
+        type: "ascending"
+      - fields: ["latestBowling.bowler1.playerID"]
+        type: "ascending"
+      - fields: ["innings1Balls.oversMap.Over0.balls.striker"]
+        type: "ascending"
+    file_reference: "ball_by_ball.yaml"
+
+  # Player and Team Data
+  players:
+    description: "Individual player profiles with career statistics and metadata"
+    document_count_estimate: "5,000+"
+    primary_key: "_id"
+    business_key: "playerID"
+    relationships:
+      - collection: "matches"
+        type: "many_to_many"
+        field: "playerID"
+        description: "Players participate in multiple matches"
+      - collection: "teams"
+        type: "many_to_many"
+        field: "currentTeam, previousTeams"
+        description: "Players belong to teams over time"
+    indexes:
+      - fields: ["playerID"]
+        type: "unique"
+      - fields: ["firstName", "lastName"]
+        type: "compound"
+      - fields: ["battingStyle"]
+        type: "ascending"
+      - fields: ["bowlingStyle"]
+        type: "ascending"
+    file_reference: "players.yaml"
+
+  teams:
+    description: "Cricket team information with logos and metadata"
+    document_count_estimate: "100+"
+    primary_key: "_id"
+    business_key: "teamId"
+    relationships:
+      - collection: "players"
+        type: "one_to_many"
+        field: "teamId"
+        description: "Teams contain multiple players"
+      - collection: "matches"
+        type: "one_to_many"
+        field: "teamOne, teamTwo"
+        description: "Teams participate in matches"
+    indexes:
+      - fields: ["teamId"]
+        type: "unique"
+      - fields: ["teamName"]
+        type: "ascending"
+      - fields: ["clubId"]
+        type: "ascending"
+
+  # Aggregated Statistics (Optional)
+  player_statistics:
+    description: "Pre-computed player statistics for performance"
+    document_count_estimate: "5,000+"
+    primary_key: "_id"
+    business_key: "playerID + format + season"
+    relationships:
+      - collection: "players"
+        type: "many_to_one"
+        field: "playerID"
+        description: "Statistics belong to a specific player"
+    indexes:
+      - fields: ["playerID", "format"]
+        type: "compound"
+      - fields: ["battingAverage"]
+        type: "descending"
+      - fields: ["bowlingAverage"]
+        type: "ascending"
+
+  match_statistics:
+    description: "Pre-computed match-level statistics and analytics"
+    document_count_estimate: "10,000+"
+    primary_key: "_id"
+    business_key: "matchId"
+    relationships:
+      - collection: "matches"
+        type: "one_to_one"
+        field: "matchId"
+        description: "Statistics belong to a specific match"
+    indexes:
+      - fields: ["matchId"]
+        type: "unique"
+      - fields: ["winMargin"]
+        type: "descending"
+
+# Query Patterns by Collection
+query_patterns:
+  matches:
+    - pattern: "team_head_to_head"
+      description: "Find all matches between two specific teams"
+      example: "db.matches.find({'teamOneName': 'Mumbai Indians', 'teamTwoName': 'Chennai Super Kings'})"
+    
+    - pattern: "tournament_results"
+      description: "Get all matches from a specific tournament"
+      example: "db.matches.find({'seriesName': 'IPL 2024'})"
+    
+    - pattern: "recent_matches"
+      description: "Find matches in a date range"
+      example: "db.matches.find({'matchDate': {'$gte': '2024-01-01', '$lte': '2024-12-31'}})"
+
+  ball_by_ball:
+    - pattern: "player_batting_details"
+      description: "Get detailed batting data for a specific player"
+      example: "db.ball_by_ball.find({'latestBatting.batsman1.playerID': 286412})"
+    
+    - pattern: "bowling_analysis"
+      description: "Analyze bowling performance in specific matches"
+      example: "db.ball_by_ball.find({'latestBowling.bowler1.playerID': 5009003})"
+    
+    - pattern: "over_by_over_analysis"
+      description: "Get over-by-over progression for match analysis"
+      example: "db.ball_by_ball.aggregate([{'$project': {'oversMap': '$innings1Balls.oversMap'}}])"
+
+  players:
+    - pattern: "player_search"
+      description: "Search players by name or attributes"
+      example: "db.players.find({'firstName': /Virat/, 'battingStyle': 'Right Handed Batter'})"
+    
+    - pattern: "team_roster"
+      description: "Get all players from a specific team"
+      example: "db.players.find({'currentTeam': 101})"
+
+# Data Quality Rules
+data_quality_rules:
+  referential_integrity:
+    - rule: "All playerIDs in ball_by_ball must exist in players collection"
+      validation: "Foreign key constraint on playerID"
+    
+    - rule: "All matchIds in ball_by_ball must exist in matches collection"
+      validation: "Foreign key constraint on matchId"
+    
+    - rule: "All teamIds in players must exist in teams collection"
+      validation: "Foreign key constraint on teamId"
+
+  data_consistency:
+    - rule: "Match scores in matches collection should match ball_by_ball totals"
+      validation: "Cross-collection score validation"
+    
+    - rule: "Player statistics should be consistent across collections"
+      validation: "Aggregate validation against raw data"
+
+# Performance Optimization
+performance_guidelines:
+  indexing_strategy:
+    - guideline: "Create compound indexes for common query patterns"
+      example: "db.matches.createIndex({'teamOneName': 1, 'matchDate': -1})"
+    
+    - guideline: "Use sparse indexes for optional fields"
+      example: "db.players.createIndex({'retiredDate': 1}, {sparse: true})"
+
+  query_optimization:
+    - guideline: "Use aggregation pipelines for complex analytics"
+      example: "Prefer aggregation over multiple find operations"
+    
+    - guideline: "Limit result sets with proper projection"
+      example: "Only select required fields in queries"
+
+# Schema Evolution
+schema_versioning:
+  current_version: "1.0"
+  migration_strategy: "Backward compatible field additions"
+  deprecation_policy: "6 months notice for breaking changes"
+  
+  version_history:
+    - version: "1.0"
+      date: "2025-01-13"
+      changes: "Initial schema design with all core collections"
