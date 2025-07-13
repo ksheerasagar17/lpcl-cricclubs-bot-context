@@ -1,26 +1,58 @@
 ## FEATURE:
 
-- Pydantic AI agent that has another Pydantic AI agent as a tool.
-- Research Agent for the primary agent and then an email draft Agent for the subagent.
-- CLI to interact with the agent.
-- Gmail for the email draft agent, Brave API for the research agent.
+- **Cricket-Insight Agent**  
+  - LangChain function-calling agent on top of a **read-only MongoDB MCP server** (`find`, `aggregate` only).  
+  - **Static YAML schema glossary** in `schema/`—no runtime discovery.  
+  - Falls back to raw pipelines; prefers **curated helper tools** in `analytics/` when they exist.  
+
+- **Web UI**  
+  - `streamlit_app.py` for an internal chat demo.  
+  - Future-proof: swap Streamlit for an Angular widget once you fold it into your broader GenAI dashboard.
+
+- **LLM & Optional Vector Index**  
+  - OpenAI `gpt-4o-mini` (default).  
+  - Optional Chroma store seeded with helper docstrings for smarter tool selection.
+
+- **Dev & Ops**  
+  - Dockerised MCP + Agent containers, deployed via **FluxCD**.  
+  - `tests/` include schema-drift checks and helper unit tests.
+
+---
 
 ## EXAMPLES:
 
-In the `examples/` folder, there is a README for you to read to understand what the example is all about and also how to structure your own README when you create documentation for the above feature.
+`examples/` shows patterns—**don’t copy directly** (different domain).
 
-- `examples/cli.py` - use this as a template to create the CLI
-- `examples/agent/` - read through all of the files here to understand best practices for creating Pydantic AI agents that support different providers and LLMs, handling agent dependencies, and adding tools to the agent.
+| Path | Why glance at it |
+|------|------------------|
+| `examples/agent/` | Best practices for provider-agnostic agent setup, env loading, error handling. |
+| `examples/schema/` | Mini YAML glossary sample—mirrors our manual-schema approach. |
+| `examples/streamlit_app.py` (if present) | Pattern for streaming chat; adapt for `streamlit_app.py`. |
 
-Don't copy any of these examples directly, it is for a different project entirely. But use this as inspiration and for best practices.
+---
 
 ## DOCUMENTATION:
 
-Pydantic AI documentation: https://ai.pydantic.dev/
+- LangChain → <https://python.langchain.com>  
+- MongoDB MCP → <https://github.com/mongodb/mongodb-mcp-server>  
+- OpenAI Function-calling → <https://platform.openai.com/docs/guides/function-calling>
+
+---
 
 ## OTHER CONSIDERATIONS:
 
-- Include a .env.example, README with instructions for setup including how to configure Gmail and Brave.
-- Include the project structure in the README.
-- Virtual environment has already been set up with the necessary dependencies.
-- Use python_dotenv and load_env() for environment variables
+- Provide `.env.example` with  
+  `OPENAI_API_KEY`, `MCP_URI`, `MONGODB_URI`, `VERBOSE_LOGGING`.  
+  Load via `python-dotenv`.
+
+- README must include:  
+  1. Project tree diagram (`schema/`, `analytics/`, `.claude/commands/`, etc.)  
+  2. One-liner Docker commands to start Mongo + MCP (read-only, allow-list `find,aggregate`).  
+  3. How to promote slow queries to helpers (LangSmith log → helper stub → tests).  
+  4. FluxCD bootstrap steps.
+
+- Security & performance flags for MCP:  
+  `READ_ONLY=true`, `MAX_TIME_MS=3000`, `ALLOW_DISK_USE=false`.
+
+- Every helper must include:  
+  *docstring usage example* + unit test.

@@ -1,0 +1,2285 @@
+{
+  "_id": {
+    "$oid": {
+      "type": "ObjectId"
+    }
+  },
+  "latestBatting": {
+    "batsman1": {
+      "playerID": {
+        "type": "Number"
+      },
+      "runsScored": {
+        "type": "Number"
+      },
+      "ballsFaced": {
+        "type": "Number"
+      },
+      "fours": {
+        "type": "Number"
+      },
+      "sixers": {
+        "type": "Number"
+      },
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      },
+      "outStringNoLink": {
+        "type": "Mixed"
+      },
+      "outStringNickNamesNoLink": {
+        "type": "Mixed"
+      },
+      "profilepic_file_path": {
+        "type": "String"
+      },
+      "matches": {
+        "type": "Number"
+      },
+      "howOut": {
+        "type": "String"
+      },
+      "isOut": {
+        "type": "Date"
+      },
+      "nickName": {
+        "type": "String"
+      },
+      "wicketTaker1": {
+        "type": "String"
+      },
+      "wicketTaker2": {
+        "type": "String"
+      },
+      "battingStyle": {
+        "type": "String"
+      },
+      "impactPlayerIn": {
+        "type": "Boolean"
+      },
+      "impactPlayerOut": {
+        "type": "Boolean"
+      }
+    },
+    "batsman2": {
+      "playerID": {
+        "type": "Number"
+      },
+      "runsScored": {
+        "type": "Number"
+      },
+      "ballsFaced": {
+        "type": "Number"
+      },
+      "fours": {
+        "type": "Number"
+      },
+      "sixers": {
+        "type": "Number"
+      },
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      },
+      "outStringNoLink": {
+        "type": "Mixed"
+      },
+      "outStringNickNamesNoLink": {
+        "type": "Mixed"
+      },
+      "profilepic_file_path": {
+        "type": "String"
+      },
+      "matches": {
+        "type": "Number"
+      },
+      "howOut": {
+        "type": "String"
+      },
+      "isOut": {
+        "type": "Date"
+      },
+      "nickName": {
+        "type": "String"
+      },
+      "wicketTaker1": {
+        "type": "String"
+      },
+      "wicketTaker2": {
+        "type": "String"
+      },
+      "battingStyle": {
+        "type": "String"
+      },
+      "impactPlayerIn": {
+        "type": "Boolean"
+      },
+      "impactPlayerOut": {
+        "type": "Boolean"
+      }
+    }
+  },
+  "latestBowling": {
+    "bowler1": {
+      "matchID": {
+        "type": "Number"
+      },
+      "playerID": {
+        "type": "Number"
+      },
+      "teamId": {
+        "type": "Number"
+      },
+      "balls": {
+        "type": "Number"
+      },
+      "runs": {
+        "type": "Number"
+      },
+      "wides": {
+        "type": "Number"
+      },
+      "noBalls": {
+        "type": "Number"
+      },
+      "hattricks": {
+        "type": "Number"
+      },
+      "dotBalls": {
+        "type": "Number"
+      },
+      "wickets": {
+        "type": "Number"
+      },
+      "maidens": {
+        "type": "Number"
+      },
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      },
+      "innings": {
+        "type": "Number"
+      },
+      "profilepic_file_path": {
+        "type": "String"
+      },
+      "overs": {
+        "type": "Date"
+      },
+      "matches": {
+        "type": "Number"
+      },
+      "bowlingStyle": {
+        "type": "String"
+      },
+      "impactPlayerIn": {
+        "type": "Boolean"
+      },
+      "impactPlayerOut": {
+        "type": "Boolean"
+      },
+      "isSecondary": {
+        "type": "Boolean"
+      }
+    },
+    "bowler2": {
+      "matchID": {
+        "type": "Number"
+      },
+      "playerID": {
+        "type": "Number"
+      },
+      "teamId": {
+        "type": "Number"
+      },
+      "balls": {
+        "type": "Number"
+      },
+      "runs": {
+        "type": "Number"
+      },
+      "wides": {
+        "type": "Number"
+      },
+      "noBalls": {
+        "type": "Number"
+      },
+      "hattricks": {
+        "type": "Number"
+      },
+      "dotBalls": {
+        "type": "Number"
+      },
+      "wickets": {
+        "type": "Number"
+      },
+      "maidens": {
+        "type": "Number"
+      },
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      },
+      "innings": {
+        "type": "Number"
+      },
+      "profilepic_file_path": {
+        "type": "String"
+      },
+      "overs": {
+        "type": "String"
+      },
+      "matches": {
+        "type": "Number"
+      },
+      "bowlingStyle": {
+        "type": "String"
+      },
+      "impactPlayerIn": {
+        "type": "Boolean"
+      },
+      "impactPlayerOut": {
+        "type": "Boolean"
+      },
+      "isSecondary": {
+        "type": "Boolean"
+      }
+    }
+  },
+  "innings1Balls": {
+    "runs": {
+      "type": "Number"
+    },
+    "overs": {
+      "type": "String"
+    },
+    "teamName": {
+      "type": "String"
+    },
+    "teamLogoPath": {
+      "type": "String"
+    },
+    "rcb": {
+      "type": "Date"
+    },
+    "oversMap": {
+      "Over0": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over1": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over2": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over3": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over4": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over5": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over6": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over7": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over8": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over9": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over10": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over11": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over12": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over13": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over14": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over15": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over16": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over17": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over18": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over19": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      }
+    }
+  },
+  "innings2Balls": {
+    "runs": {
+      "type": "Number"
+    },
+    "overs": {
+      "type": "String"
+    },
+    "teamName": {
+      "type": "String"
+    },
+    "teamLogoPath": {
+      "type": "String"
+    },
+    "rcb": {
+      "type": "Date"
+    },
+    "oversMap": {
+      "Over0": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over1": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over2": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over3": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over4": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over5": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "String"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over6": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over7": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over8": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over9": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over10": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over11": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over12": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over13": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "Date"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over14": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over15": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over16": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      },
+      "Over17": {
+        "runs": {
+          "type": "Number"
+        },
+        "rcb": {
+          "type": "Date"
+        },
+        "runRate": {
+          "type": "String"
+        },
+        "batsmanName": {
+          "type": "String"
+        },
+        "runnerName": {
+          "type": "String"
+        },
+        "batsmanRuns": {
+          "type": "Number"
+        },
+        "runnerRuns": {
+          "type": "Number"
+        },
+        "batsmanBalls": {
+          "type": "Number"
+        },
+        "runnerBalls": {
+          "type": "Number"
+        },
+        "bowlerName": {
+          "type": "String"
+        },
+        "bowlerBalls": {
+          "type": "Number"
+        },
+        "bowlerMaidens": {
+          "type": "Number"
+        },
+        "bowlerRuns": {
+          "type": "Number"
+        },
+        "bowlerWickets": {
+          "type": "Number"
+        },
+        "balls": {
+          "type": [
+            "Mixed"
+          ]
+        },
+        "overNum": {
+          "type": "Number"
+        }
+      }
+    }
+  },
+  "superOverInnings1Balls": {
+    "type": "Mixed"
+  },
+  "superOverInnings2Balls": {
+    "type": "Mixed"
+  },
+  "innings3Balls": {
+    "type": "Mixed"
+  },
+  "innings4Balls": {
+    "type": "Mixed"
+  }
+}

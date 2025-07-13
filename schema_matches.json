@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "_id",
+    "canDelete",
+    "canUpdate",
+    "clubId",
+    "clubName",
+    "isComplete",
+    "isDls",
+    "isFollowon",
+    "lastUpdatedDate",
+    "live_streaming_link",
+    "location",
+    "matchDate",
+    "matchId",
+    "matchType",
+    "overs",
+    "result",
+    "seriesName",
+    "seriesType",
+    "status",
+    "t1_1balls",
+    "t1_1total",
+    "t1_1wickets",
+    "t1_2balls",
+    "t1_2total",
+    "t1_2wickets",
+    "t1_logo_file_path",
+    "t1balls",
+    "t1total",
+    "t1wickets",
+    "t2_1balls",
+    "t2_1total",
+    "t2_1wickets",
+    "t2_2balls",
+    "t2_2total",
+    "t2_2wickets",
+    "t2_logo_file_path",
+    "t2balls",
+    "t2RevisedOvers",
+    "t2total",
+    "t2wickets",
+    "teamOne",
+    "teamOneCode",
+    "teamOneName",
+    "teamTwo",
+    "teamTwoCode",
+    "teamTwoName",
+    "timeSinceLastUpdate",
+    "winner"
+  ],
+  "properties": {
+    "_id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "canDelete": {
+      "type": "integer"
+    },
+    "canUpdate": {
+      "type": "integer"
+    },
+    "clubId": {
+      "type": "integer"
+    },
+    "clubName": {
+      "type": "string"
+    },
+    "isComplete": {
+      "type": "integer"
+    },
+    "isDls": {
+      "type": "boolean"
+    },
+    "isFollowon": {
+      "type": "integer"
+    },
+    "lastUpdatedDate": {
+      "type": "string"
+    },
+    "live_streaming_link": {
+      "type": "string"
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "matchDate": {
+      "type": "string"
+    },
+    "matchId": {
+      "type": "integer"
+    },
+    "matchType": {
+      "type": "string"
+    },
+    "overs": {
+      "type": "integer"
+    },
+    "result": {
+      "type": "string"
+    },
+    "seriesName": {
+      "type": "string"
+    },
+    "seriesType": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "t1_1balls": {
+      "type": "integer"
+    },
+    "t1_1total": {
+      "type": "integer"
+    },
+    "t1_1wickets": {
+      "type": "integer"
+    },
+    "t1_2balls": {
+      "type": "integer"
+    },
+    "t1_2total": {
+      "type": "integer"
+    },
+    "t1_2wickets": {
+      "type": "integer"
+    },
+    "t1_logo_file_path": {
+      "type": "string"
+    },
+    "t1balls": {
+      "type": "integer"
+    },
+    "t1total": {
+      "type": "integer"
+    },
+    "t1wickets": {
+      "type": "integer"
+    },
+    "t2_1balls": {
+      "type": "integer"
+    },
+    "t2_1total": {
+      "type": "integer"
+    },
+    "t2_1wickets": {
+      "type": "integer"
+    },
+    "t2_2balls": {
+      "type": "integer"
+    },
+    "t2_2total": {
+      "type": "integer"
+    },
+    "t2_2wickets": {
+      "type": "integer"
+    },
+    "t2_logo_file_path": {
+      "type": "string"
+    },
+    "t2balls": {
+      "type": "integer"
+    },
+    "t2RevisedOvers": {
+      "$ref": "#/$defs/Double"
+    },
+    "t2total": {
+      "type": "integer"
+    },
+    "t2wickets": {
+      "type": "integer"
+    },
+    "teamOne": {
+      "type": "integer"
+    },
+    "teamOneCode": {
+      "type": "string"
+    },
+    "teamOneName": {
+      "type": "string"
+    },
+    "teamTwo": {
+      "type": "integer"
+    },
+    "teamTwoCode": {
+      "type": "string"
+    },
+    "teamTwoName": {
+      "type": "string"
+    },
+    "timeSinceLastUpdate": {
+      "type": "string"
+    },
+    "winner": {
+      "type": "integer"
+    }
+  },
+  "$defs": {
+    "ObjectId": {
+      "type": "object",
+      "properties": {
+        "$oid": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$"
+        }
+      },
+      "required": [
+        "$oid"
+      ],
+      "additionalProperties": false
+    },
+    "Double": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "$numberDouble": {
+              "enum": [
+                "Infinity",
+                "-Infinity",
+                "NaN"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
