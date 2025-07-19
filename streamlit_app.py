@@ -100,20 +100,21 @@ def initialize_session_state():
     
     if "system_info" not in st.session_state:
         st.session_state.system_info = None
-
-
-def create_agent_from_config(config_dict: Dict[str, Any]) -> CricketInsightAgent:
-    """
-    Create Cricket-Insight Agent from configuration.
     
-    Args:
-        config_dict: Configuration dictionary
+    if "agent_initialized" not in st.session_state:
+        st.session_state.agent_initialized = False
+
+
+def create_agent_from_config() -> CricketInsightAgent:
+    """
+    Create Cricket-Insight Agent from CricketConfig environment loading.
     
     Returns:
         Initialized CricketInsightAgent
     """
     try:
-        config = CricketConfig(**config_dict)
+        # Load configuration from environment variables
+        config = CricketConfig.from_env()
         config.validate_required_settings()
         
         agent = CricketInsightAgent(
@@ -122,11 +123,12 @@ def create_agent_from_config(config_dict: Dict[str, Any]) -> CricketInsightAgent
             enable_analytics_helpers=True
         )
         
-        return agent
+        return agent, config
         
     except Exception as e:
         st.error(f"Failed to create agent: {e}")
-        return None
+        logger.error(f"Agent creation failed: {e}")
+        return None, None
 
 
 def display_cricket_header():
@@ -144,65 +146,6 @@ def display_sidebar():
     with st.sidebar:
         st.header("⚙️ Configuration")
         
-        # Agent configuration
-        st.subheader("Agent Settings")
-        
-        openai_api_key = st.text_input(
-            "OpenAI API Key",
-            type="password",
-            value=st.session_state.get("openai_api_key", ""),
-            help="Your OpenAI API key for GPT-4o-mini"
-        )
-        
-        mcp_uri = st.text_input(
-            "MCP Server URI",
-            value=st.session_state.get("mcp_uri", "http://localhost:8000/mcp"),
-            help="URI for MongoDB MCP server"
-        )
-        
-        temperature = st.slider(
-            "LLM Temperature",
-            min_value=0.0,
-            max_value=2.0,
-            value=0.1,
-            step=0.1,
-            help="Lower values = more consistent responses"
-        )
-        
-        verbose_logging = st.checkbox(
-            "Verbose Logging",
-            value=False,
-            help="Enable detailed logging"
-        )
-        
-        # Create agent button
-        if st.button("🚀 Initialize Agent", type="primary"):
-            if not openai_api_key:
-                st.error("OpenAI API key is required")
-                return
-            
-            config_dict = {
-                "openai_api_key": openai_api_key,
-                "mcp_uri": mcp_uri,
-                "llm_temperature": temperature,
-                "verbose_logging": verbose_logging
-            }
-            
-            with st.spinner("Initializing Cricket-Insight Agent..."):
-                agent = create_agent_from_config(config_dict)
-                
-                if agent:
-                    st.session_state.agent = agent
-                    st.session_state.agent_config = config_dict
-                    st.session_state.openai_api_key = openai_api_key
-                    st.session_state.mcp_uri = mcp_uri
-                    
-                    # Get system info
-                    st.session_state.system_info = agent.get_system_info()
-                    
-                    st.success("✅ Agent initialized successfully!")
-                    st.rerun()
-        
         # Agent status
         if st.session_state.agent:
             st.success("🟢 Agent Ready")
@@ -215,20 +158,38 @@ def display_sidebar():
                     st.write(f"**Tools**: {info['tools']['total_count']}")
                     st.write(f"**Streaming**: {'✅' if info['agent']['streaming_enabled'] else '❌'}")
                     st.write(f"**Analytics**: {'✅' if info['agent']['analytics_helpers_enabled'] else '❌'}")
+                
+                # Configuration details - separate expander to avoid nesting
+                if st.session_state.agent_config:
+                    with st.expander("🔧 Config Details"):
+                        config_display = st.session_state.agent_config.to_dict()
+                        for key, value in config_display.items():
+                            if key != "openai_api_key":  # Skip sensitive data
+                                st.write(f"**{key}**: {value}")
         else:
-            st.warning("🟡 Agent Not Initialized")
+            st.error("🔴 Agent Not Initialized")
+            st.write("Check your environment variables:")
+            st.code("""
+OPENAI_API_KEY=your_api_key_here
+MCP_URI=http://localhost:8000/mcp
+            """)
+            
+            if st.button("🔄 Retry Initialization"):
+                st.rerun()
         
         # Query examples
         st.subheader("🎯 Example Queries")
         
         example_queries = [
-            "What is Virat Kohli's batting average in T20 cricket?",
-            "Show me the top 5 run scorers in the last IPL season",
-            "Compare Mumbai Indians vs Chennai Super Kings head-to-head record",
-            "Analyze the powerplay performance of teams this season",
-            "Which bowlers have the best economy rate in death overs?",
-            "Show partnership analysis for the highest T20 chase",
-            "Get team statistics for Royal Challengers Bangalore"
+            "What is TopGuns Elite's batting performance in LPCL T20?",
+            "Show me the top 5 run scorers in the LPCL Spring Leather T20",
+            "Compare TopGuns Elite vs Austin Super Kings head-to-head record",
+            "Analyze the powerplay performance of BraveHearts this season",
+            "Which bowlers from Deccan Chargers have the best economy rate in death overs?",
+            "Show partnership analysis for Austin Chargers in their highest T20 chase",
+            "Get team statistics for Laidback Legends in LPCL tournaments",
+            "How did Invaders perform in the 2024 Fall Leather tournament?",
+            "Compare Eklavya's bowling attack with other LPCL teams"
         ]
         
         for query in example_queries:
@@ -481,6 +442,25 @@ def main():
     # Initialize session state
     initialize_session_state()
     
+    # Auto-initialize agent on first run
+    if not st.session_state.agent_initialized:
+        with st.spinner("🏏 Initializing Cricket-Insight Agent..."):
+            try:
+                agent, config = create_agent_from_config()
+                if agent and config:
+                    st.session_state.agent = agent
+                    st.session_state.agent_config = config
+                    st.session_state.system_info = agent.get_system_info()
+                    st.session_state.agent_initialized = True
+                    st.success("✅ LPCL Cricket Agent Ready!")
+                    time.sleep(1)  # Brief pause to show success message
+                    st.rerun()
+                else:
+                    st.session_state.agent_initialized = True  # Prevent infinite retry
+            except Exception as e:
+                st.error(f"❌ Failed to initialize agent: {e}")
+                st.session_state.agent_initialized = True  # Prevent infinite retry
+    
     # Display header
     display_cricket_header()
     
@@ -507,8 +487,8 @@ def main():
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666; padding: 20px;">
-        🏏 Cricket-Insight Agent | Powered by OpenAI GPT-4o-mini & LangChain<br>
-        <small>AI-driven cricket analytics for intelligent insights</small>
+        🏏 LPCL Cricket-Insight Agent | Powered by OpenAI GPT-4o-mini & LangChain<br>
+        <small>AI-driven cricket analytics for Austin's premier cricket league</small>
     </div>
     """, unsafe_allow_html=True)
 

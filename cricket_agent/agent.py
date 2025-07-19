@@ -8,6 +8,7 @@ through natural language interface with MCP server integration.
 import asyncio
 import logging
 import os
+import yaml
 from typing import Dict, Any, List, Optional, AsyncGenerator, Union
 from datetime import datetime
 
@@ -18,9 +19,10 @@ from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_core.tools import BaseTool
 from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_core.outputs import LLMResult
+from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from .config import CricketConfig
-from .tools import MCPTool, AnalyticsHelperTool, get_available_tools
+# from .tools import MCPTool, AnalyticsHelperTool, get_available_tools
 from .prompts import get_cricket_system_prompt
 
 logger = logging.getLogger(__name__)
@@ -61,6 +63,19 @@ class StreamingCallbackHandler(AsyncCallbackHandler):
             logger.info(f"Tool execution completed: {tool_call['tool']} ({tool_call['duration']:.2f}s)")
 
 
+async def get_mcp_tools_with_schema(client):
+    tools = await client.get_tools()
+    
+    # for tool in tools:
+    #     if tool.name in ['find', 'aggregate', 'find_one']:
+    #         # Add schema context to tool description
+    #         tool.description = f"""{tool.description}
+            
+    #         Schema Context:
+    #         {yaml.dump(schema_data, default_flow_style=False)}"""
+    
+    return tools
+
 class CricketInsightAgent:
     """
     Cricket-Insight Agent with LangChain and OpenAI gpt-4o-mini integration.
@@ -86,6 +101,22 @@ class CricketInsightAgent:
         self.config = config or CricketConfig()
         self.enable_streaming = enable_streaming
         self.enable_analytics_helpers = enable_analytics_helpers
+
+        self.mcp_client = MultiServerMCPClient(
+            {
+                "mongodb": {
+                    "command": "npx",
+                    "args": [
+                        "-y",
+                        "mongodb-mcp-server",
+                        "--connectionString",
+                        self.config.mcp_uri,
+                        "--readOnly"
+                    ],
+                    "transport": "stdio",
+                }
+            }
+        )
         
         # Initialize OpenAI model with 2025 tools API
         self.llm = ChatOpenAI(
@@ -98,7 +129,7 @@ class CricketInsightAgent:
         )
         
         # Initialize tools
-        self.tools = self._initialize_tools()
+        asyncio.run(self._initialize_tools())
         
         # Create agent with tools (2025 API pattern)
         self.agent = self._create_agent()
@@ -115,7 +146,7 @@ class CricketInsightAgent:
         
         logger.info(f"Cricket-Insight Agent initialized with {len(self.tools)} tools")
     
-    def _initialize_tools(self) -> List[BaseTool]:
+    async def _initialize_tools(self) -> List[BaseTool]:
         """
         Initialize available tools for the agent.
         
@@ -125,19 +156,21 @@ class CricketInsightAgent:
         tools = []
         
         try:
+            logger.info("loading MCP tools")
             # Get MCP tools
-            mcp_tools = get_available_tools(
-                mcp_uri=self.config.mcp_uri,
-                include_analytics=self.enable_analytics_helpers
-            )
-            tools.extend(mcp_tools)
+            tools = await get_mcp_tools_with_schema(self.mcp_client)
+            # mcp_tools = get_available_tools(
+            #     mcp_uri=self.config.mcp_uri,
+            #     include_analytics=self.enable_analytics_helpers
+            # )
+            # tools.extend(mcp_tools)
             
             logger.info(f"Loaded {len(mcp_tools)} MCP tools")
             
         except Exception as e:
             logger.error(f"Failed to initialize MCP tools: {e}")
             # Continue without MCP tools - agent can still work with analytics helpers
-        
+
         return tools
     
     def _create_agent(self):
@@ -150,7 +183,8 @@ class CricketInsightAgent:
         # Get cricket-specific system prompt
         system_prompt = get_cricket_system_prompt(
             tools_available=len(self.tools),
-            mcp_enabled=any(isinstance(tool, MCPTool) for tool in self.tools),
+            mcp_enabled = False,
+            # mcp_enabled=any(isinstance(tool, MCPTool) for tool in self.tools),
             analytics_enabled=self.enable_analytics_helpers
         )
         
@@ -430,7 +464,7 @@ class CricketInsightAgent:
         
         try:
             # Test MCP server if available
-            mcp_tools = [tool for tool in self.tools if isinstance(tool, MCPTool)]
+            # mcp_tools = [tool for tool in self.tools if isinstance(tool, MCPTool)]
             if mcp_tools:
                 # Test one MCP tool
                 # This would be implemented based on actual MCP tool interface

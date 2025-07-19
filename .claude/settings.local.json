@@ -19,7 +19,8 @@
       "WebFetch(domain:docs.anthropic.com)",
       "WebFetch(domain:python.langchain.com)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:platform.openai.com)"
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:cricclubs.com)"
     ],
     "deny": []
   }
