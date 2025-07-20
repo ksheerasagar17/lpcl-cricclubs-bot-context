@@ -20,6 +20,7 @@ from langchain_core.tools import BaseTool
 from langchain_core.callbacks import AsyncCallbackHandler
 from langchain_core.outputs import LLMResult
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langchain_mcp_adapters.tools import load_mcp_tools
 
 from .config import CricketConfig
 # from .tools import MCPTool, AnalyticsHelperTool, get_available_tools
@@ -104,18 +105,19 @@ class CricketInsightAgent:
 
         self.mcp_client = MultiServerMCPClient(
             {
-                "mongodb": {
-                    "command": "npx",
-                    "args": [
-                        "-y",
-                        "mongodb-mcp-server",
-                        "--connectionString",
-                        self.config.mcp_uri,
-                        "--readOnly"
-                    ],
-                    "transport": "stdio",
-                }
+            "mongodb": {
+                "command": "docker",
+                "args": [
+                    "run",
+                    "--rm",
+                    "-i",
+                    "-e",
+                    f"MDB_MCP_CONNECTION_STRING={self.config.mcp_uri}/{self.config.mongodb_database}",
+                    "mongodb/mongodb-mcp-server:latest",
+                ],
+                "transport": "stdio",
             }
+        }
         )
         
         # Initialize OpenAI model with 2025 tools API
@@ -129,8 +131,9 @@ class CricketInsightAgent:
         )
         
         # Initialize tools
-        asyncio.run(self._initialize_tools())
-        
+        async with self.mcp_client.session("mongodb") as session:
+            self.tools = await load_mcp_tools(session)
+            
         # Create agent with tools (2025 API pattern)
         self.agent = self._create_agent()
         
