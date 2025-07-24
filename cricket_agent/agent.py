@@ -13,7 +13,7 @@ from typing import Dict, Any, List, Optional, AsyncGenerator, Union
 from datetime import datetime
 
 from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_core.tools import BaseTool
@@ -113,14 +113,14 @@ class CricketInsightAgent:
             }
         )
         
-        # Initialize OpenAI model with 2025 tools API
-        self.llm = ChatOpenAI(
+        # Initialize Ollama model with LangChain
+        self.llm = ChatOllama(
             model=self.config.llm_model,
-            api_key=self.config.openai_api_key,
+            base_url=self.config.ollama_base_url,
             temperature=self.config.llm_temperature,
-            streaming=enable_streaming,
-            max_tokens=2000,  # Reasonable limit for cricket analysis
-            timeout=30.0  # 30 second timeout
+            # streaming=enable_streaming,  # Ollama handles streaming differently
+            # max_tokens=2000,  # Not applicable for Ollama
+            # timeout=30.0  # May not be directly supported
         )
         
         # Initialize tools (will be loaded lazily when first needed)
@@ -328,6 +328,8 @@ class CricketInsightAgent:
                     }
         
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             execution_time = (datetime.utcnow() - start_time).total_seconds()
             logger.error(f"Streaming query failed: {e}")
             
@@ -489,7 +491,7 @@ class CricketInsightAgent:
 # Convenience functions for easy usage
 
 async def create_cricket_agent(
-    openai_api_key: Optional[str] = None,
+    ollama_base_url: Optional[str] = None,
     mcp_uri: Optional[str] = None,
     enable_streaming: bool = True
 ) -> CricketInsightAgent:
@@ -497,7 +499,7 @@ async def create_cricket_agent(
     Create and initialize a Cricket-Insight Agent.
     
     Args:
-        openai_api_key: OpenAI API key (uses env var if None)
+        ollama_base_url: Ollama server base URL (uses env var if None)
         mcp_uri: MCP server URI (uses env var if None)
         enable_streaming: Enable streaming responses
     
@@ -505,7 +507,7 @@ async def create_cricket_agent(
         Initialized CricketInsightAgent
     """
     config = CricketConfig(
-        openai_api_key=openai_api_key,
+        ollama_base_url=ollama_base_url,
         mcp_uri=mcp_uri
     )
     
@@ -517,7 +519,7 @@ async def create_cricket_agent(
 
 async def quick_cricket_query(
     query: str,
-    openai_api_key: Optional[str] = None,
+    ollama_base_url: Optional[str] = None,
     mcp_uri: Optional[str] = None
 ) -> str:
     """
@@ -525,14 +527,14 @@ async def quick_cricket_query(
     
     Args:
         query: Cricket analysis query
-        openai_api_key: OpenAI API key
+        ollama_base_url: Ollama server base URL
         mcp_uri: MCP server URI
     
     Returns:
         Analysis response string
     """
     agent = await create_cricket_agent(
-        openai_api_key=openai_api_key,
+        ollama_base_url=ollama_base_url,
         mcp_uri=mcp_uri,
         enable_streaming=False
     )

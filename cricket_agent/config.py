@@ -25,8 +25,8 @@ class CricketConfig(BaseModel):
     """
     
     # LLM Configuration
-    openai_api_key: str = Field(description="OpenAI API key for GPT models")
-    llm_model: str = Field(default="gpt-4o-mini", description="OpenAI model to use")
+    ollama_base_url: str = Field(default="http://localhost:11434", description="Ollama server base URL")
+    llm_model: str = Field(default="llama3.1", description="Ollama model to use")
     llm_temperature: float = Field(default=0.1, description="LLM temperature for consistency", ge=0.0, le=2.0)
     
     # MCP Server Configuration
@@ -47,7 +47,7 @@ class CricketConfig(BaseModel):
     # Vector Store Configuration (Optional)
     enable_vector_store: bool = Field(default=False, description="Enable Chroma vector store")
     chroma_persist_dir: str = Field(default="./vector_store/data", description="Chroma persistence directory")
-    embeddings_model: str = Field(default="text-embedding-3-small", description="OpenAI embeddings model")
+    embeddings_model: str = Field(default="nomic-embed-text", description="Ollama embeddings model")
     vector_store_k: int = Field(default=3, description="Number of similar tools to retrieve", gt=0)
     
     # Performance Settings
@@ -69,12 +69,12 @@ class CricketConfig(BaseModel):
         # Load from environment variables if not provided
         env_data = {}
         
-        # OpenAI Configuration
-        if "openai_api_key" not in data:
-            env_data["openai_api_key"] = os.getenv("OPENAI_API_KEY")
+        # Ollama Configuration
+        if "ollama_base_url" not in data:
+            env_data["ollama_base_url"] = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         
         if "llm_model" not in data:
-            env_data["llm_model"] = os.getenv("LLM_MODEL", "gpt-4o-mini")
+            env_data["llm_model"] = os.getenv("LLM_MODEL", "llama3.1")
         
         if "llm_temperature" not in data:
             env_data["llm_temperature"] = float(os.getenv("LLM_TEMPERATURE", "0.1"))
@@ -117,7 +117,7 @@ class CricketConfig(BaseModel):
             env_data["chroma_persist_dir"] = os.getenv("CHROMA_PERSIST_DIR", "./vector_store/data")
         
         if "embeddings_model" not in data:
-            env_data["embeddings_model"] = os.getenv("EMBEDDINGS_MODEL", "text-embedding-3-small")
+            env_data["embeddings_model"] = os.getenv("EMBEDDINGS_MODEL", "nomic-embed-text")
         
         if "vector_store_k" not in data:
             env_data["vector_store_k"] = int(os.getenv("VECTOR_STORE_K", "3"))
@@ -137,21 +137,23 @@ class CricketConfig(BaseModel):
         # Configure logging
         self._configure_logging()
     
-    @validator("openai_api_key")
-    def validate_openai_api_key(cls, v):
-        """Validate OpenAI API key."""
+    @validator("ollama_base_url")
+    def validate_ollama_base_url(cls, v):
+        """Validate Ollama base URL."""
         if not v:
-            raise ValueError("OpenAI API key is required")
-        if not v.startswith("sk-"):
-            raise ValueError("Invalid OpenAI API key format")
+            raise ValueError("Ollama base URL is required")
+        if not v.startswith("http://") and not v.startswith("https://"):
+            raise ValueError("Ollama base URL must start with 'http://' or 'https://'")
         return v
     
     @validator("llm_model")
     def validate_llm_model(cls, v):
         """Validate LLM model name."""
         valid_models = [
-            "gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-4", 
-            "gpt-3.5-turbo", "gpt-3.5-turbo-16k"
+            "llama3.1", "llama3.1:8b", "llama3.1:70b", "llama3.1:405b",
+            "llama3", "llama3:8b", "llama3:70b",
+            "llama2", "llama2:7b", "llama2:13b", "llama2:70b",
+            "codellama", "codellama:7b", "codellama:13b", "codellama:34b"
         ]
         if v not in valid_models:
             logger.warning(f"Model {v} not in known valid models: {valid_models}")
@@ -214,7 +216,7 @@ class CricketConfig(BaseModel):
             Dictionary with LLM configuration
         """
         return {
-            "api_key": self.openai_api_key,
+            "base_url": self.ollama_base_url,
             "model": self.llm_model,
             "temperature": self.llm_temperature
         }
@@ -243,8 +245,8 @@ class CricketConfig(BaseModel):
         Raises:
             ValueError: If required settings are missing
         """
-        if not self.openai_api_key:
-            raise ValueError("OpenAI API key is required")
+        if not self.ollama_base_url:
+            raise ValueError("Ollama base URL is required")
         
         # MCP URI is optional but recommended
         if not self.mcp_uri:
@@ -261,9 +263,8 @@ class CricketConfig(BaseModel):
         """
         config_dict = self.dict()
         
-        # Mask sensitive information
-        if config_dict.get("openai_api_key"):
-            config_dict["openai_api_key"] = "sk-***"
+        # Mask sensitive information - for Ollama, the URL is generally not sensitive
+        # but we can mask it if it contains authentication tokens
         
         if config_dict.get("mongodb_uri"):
             # Mask password in URI
@@ -300,6 +301,7 @@ class CricketConfig(BaseModel):
             log_level="DEBUG",
             llm_temperature=0.0,  # More deterministic for testing
             max_documents=100,    # Smaller limits for faster dev
+            ollama_base_url="http://localhost:11434"  # Default local Ollama
         )
     
     @classmethod
@@ -316,4 +318,5 @@ class CricketConfig(BaseModel):
             llm_temperature=0.1,
             max_documents=1000,
             mongodb_pool_size=20,  # Higher pool for production
+            ollama_base_url="http://localhost:11434"  # Default local Ollama
         )
