@@ -64,18 +64,7 @@ class StreamingCallbackHandler(AsyncCallbackHandler):
             logger.info(f"Tool execution completed: {tool_call['tool']} ({tool_call['duration']:.2f}s)")
 
 
-async def get_mcp_tools_with_schema(client):
-    tools = await client.get_tools()
-    
-    # for tool in tools:
-    #     if tool.name in ['find', 'aggregate', 'find_one']:
-    #         # Add schema context to tool description
-    #         tool.description = f"""{tool.description}
-            
-    #         Schema Context:
-    #         {yaml.dump(schema_data, default_flow_style=False)}"""
-    
-    return tools
+
 
 class CricketInsightAgent:
     """
@@ -103,21 +92,25 @@ class CricketInsightAgent:
         self.enable_streaming = enable_streaming
         self.enable_analytics_helpers = enable_analytics_helpers
 
+        # Build proper connection string
+        connection_string = f"{self.config.mcp_uri}{self.config.mongodb_database}"
+        
         self.mcp_client = MultiServerMCPClient(
             {
-            "mongodb": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "--rm",
-                    "-i",
-                    "-e",
-                    f"MDB_MCP_CONNECTION_STRING={self.config.mcp_uri}/{self.config.mongodb_database}",
-                    "mongodb/mongodb-mcp-server:latest",
-                ],
-                "transport": "stdio",
+                "mongodb": {
+                    "command": "docker",
+                    "args": [
+                        "run",
+                        "--rm",
+                        "-i",
+                        "--network=host",
+                        "-e",
+                        f"MDB_MCP_CONNECTION_STRING={connection_string}",
+                        "mongodb/mongodb-mcp-server:latest"
+                    ],
+                    "transport": "stdio"
+                }
             }
-        }
         )
         
         # Initialize OpenAI model with 2025 tools API
@@ -130,9 +123,9 @@ class CricketInsightAgent:
             timeout=30.0  # 30 second timeout
         )
         
-        # Initialize tools
-        async with self.mcp_client.session("mongodb") as session:
-            self.tools = await load_mcp_tools(session)
+        # Initialize tools (will be loaded lazily when first needed)
+        self.tools = asyncio.run(self._initialize_tools())
+        self._tools_initialized = False
             
         # Create agent with tools (2025 API pattern)
         self.agent = self._create_agent()
@@ -148,6 +141,7 @@ class CricketInsightAgent:
         )
         
         logger.info(f"Cricket-Insight Agent initialized with {len(self.tools)} tools")
+        logger.info(f"{self.tools}")
     
     async def _initialize_tools(self) -> List[BaseTool]:
         """
@@ -159,19 +153,17 @@ class CricketInsightAgent:
         tools = []
         
         try:
-            logger.info("loading MCP tools")
-            # Get MCP tools
-            tools = await get_mcp_tools_with_schema(self.mcp_client)
-            # mcp_tools = get_available_tools(
-            #     mcp_uri=self.config.mcp_uri,
-            #     include_analytics=self.enable_analytics_helpers
-            # )
-            # tools.extend(mcp_tools)
+            logger.info("Loading MCP tools")
+            # Use session context manager directly without explicit start
+            async with self.mcp_client.session("mongodb") as session:
+                tools = await load_mcp_tools(session)
             
-            logger.info(f"Loaded {len(mcp_tools)} MCP tools")
+            logger.info(f"Loaded {len(tools)} MCP tools")
             
         except Exception as e:
+            # import traceback
             logger.error(f"Failed to initialize MCP tools: {e}")
+            # logger.error(f"Full traceback: {traceback.format_exc()}")
             # Continue without MCP tools - agent can still work with analytics helpers
 
         return tools
@@ -227,7 +219,7 @@ class CricketInsightAgent:
         """
         start_time = datetime.utcnow()
         
-        try:
+        try:            
             # Prepare input
             agent_input = {
                 "input": query,
@@ -468,7 +460,7 @@ class CricketInsightAgent:
         try:
             # Test MCP server if available
             # mcp_tools = [tool for tool in self.tools if isinstance(tool, MCPTool)]
-            if mcp_tools:
+            if self.tools:
                 # Test one MCP tool
                 # This would be implemented based on actual MCP tool interface
                 health_status["mcp_server"] = "healthy"
@@ -484,6 +476,14 @@ class CricketInsightAgent:
     def __del__(self):
         """Cleanup on destruction."""
         logger.info("Cricket-Insight Agent shutting down")
+        
+    async def cleanup(self):
+        """Async cleanup method for proper resource management."""
+        try:
+            # MCP client cleanup is handled automatically by session context manager
+            logger.info("Agent cleanup completed")
+        except Exception as e:
+            logger.error(f"Error during cleanup: {e}")
 
 
 # Convenience functions for easy usage
